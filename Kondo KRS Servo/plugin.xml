@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<PluginV1XML xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <FRIENDLY_NAME>LewanSoul Servo</FRIENDLY_NAME>
+  <DLL_FILENAME>LewanSoul Servos.dll</DLL_FILENAME>
+  <AUTHOR_NAME>DJ Sures</AUTHOR_NAME>
+  <LICENSE_URL>http://www.ez-robot.com/tutorials/plugin-license.aspx</LICENSE_URL>
+  <PLUGIN_GUID>5df2a551-d124-43ac-9f5d-3b6234d106ae</PLUGIN_GUID>
+  <CATEGORY_TYPE>Servo</CATEGORY_TYPE>
+  <DESCRIPTION>Control LewanSoul servos with EZ-Builder</DESCRIPTION>B
+  <VersionRelease>13</VersionRelease>
+</PluginV1XML>

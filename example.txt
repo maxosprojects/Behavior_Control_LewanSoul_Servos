@@ -1,0 +1,10 @@
+0x55
+0x55
+ID
+length 7
+cmd 1
+lower 8
+higher 8
+checksum (id + length+ cmd + parameters) take lowest byte
+
+
