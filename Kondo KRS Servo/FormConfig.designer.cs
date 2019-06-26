@@ -39,11 +39,14 @@ namespace LewanSoul_Servos {
       this.tabPage1 = new System.Windows.Forms.TabPage();
       this.tabPage2 = new System.Windows.Forms.TabPage();
       this.groupBox1 = new System.Windows.Forms.GroupBox();
-      this.cbOrginalId = new System.Windows.Forms.ComboBox();
-      this.cbNewId = new System.Windows.Forms.ComboBox();
-      this.label3 = new System.Windows.Forms.Label();
-      this.label4 = new System.Windows.Forms.Label();
       this.btnChangeId = new System.Windows.Forms.Button();
+      this.label4 = new System.Windows.Forms.Label();
+      this.label3 = new System.Windows.Forms.Label();
+      this.cbNewId = new System.Windows.Forms.ComboBox();
+      this.cbOrginalId = new System.Windows.Forms.ComboBox();
+      this.ucUseComPort = new EZ_Builder.UCForms.UC.UCCheckGroupBox();
+      this.cbComPort = new System.Windows.Forms.ComboBox();
+      this.label5 = new System.Windows.Forms.Label();
       this.groupBox5.SuspendLayout();
       this.ucUseSoftwareUart.SuspendLayout();
       this.ucUseHardwareUART.SuspendLayout();
@@ -52,10 +55,12 @@ namespace LewanSoul_Servos {
       this.tabPage1.SuspendLayout();
       this.tabPage2.SuspendLayout();
       this.groupBox1.SuspendLayout();
+      this.ucUseComPort.SuspendLayout();
       this.SuspendLayout();
       // 
       // groupBox5
       // 
+      this.groupBox5.Controls.Add(this.ucUseComPort);
       this.groupBox5.Controls.Add(this.ucUseSoftwareUart);
       this.groupBox5.Controls.Add(this.ucUseHardwareUART);
       this.groupBox5.Dock = System.Windows.Forms.DockStyle.Top;
@@ -235,40 +240,6 @@ namespace LewanSoul_Servos {
       this.groupBox1.TabStop = false;
       this.groupBox1.Text = "Change Servo ID";
       // 
-      // cbOrginalId
-      // 
-      this.cbOrginalId.FormattingEnabled = true;
-      this.cbOrginalId.Location = new System.Drawing.Point(74, 19);
-      this.cbOrginalId.Name = "cbOrginalId";
-      this.cbOrginalId.Size = new System.Drawing.Size(121, 21);
-      this.cbOrginalId.TabIndex = 0;
-      // 
-      // cbNewId
-      // 
-      this.cbNewId.FormattingEnabled = true;
-      this.cbNewId.Location = new System.Drawing.Point(74, 58);
-      this.cbNewId.Name = "cbNewId";
-      this.cbNewId.Size = new System.Drawing.Size(121, 21);
-      this.cbNewId.TabIndex = 1;
-      // 
-      // label3
-      // 
-      this.label3.Location = new System.Drawing.Point(12, 19);
-      this.label3.Name = "label3";
-      this.label3.Size = new System.Drawing.Size(56, 23);
-      this.label3.TabIndex = 2;
-      this.label3.Text = "Old ID;";
-      this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-      // 
-      // label4
-      // 
-      this.label4.Location = new System.Drawing.Point(12, 58);
-      this.label4.Name = "label4";
-      this.label4.Size = new System.Drawing.Size(56, 23);
-      this.label4.TabIndex = 3;
-      this.label4.Text = "New ID:";
-      this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-      // 
       // btnChangeId
       // 
       this.btnChangeId.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -279,6 +250,73 @@ namespace LewanSoul_Servos {
       this.btnChangeId.Text = "Change ID";
       this.btnChangeId.UseVisualStyleBackColor = true;
       this.btnChangeId.Click += new System.EventHandler(this.btnChangeId_Click);
+      // 
+      // label4
+      // 
+      this.label4.Location = new System.Drawing.Point(12, 58);
+      this.label4.Name = "label4";
+      this.label4.Size = new System.Drawing.Size(56, 23);
+      this.label4.TabIndex = 3;
+      this.label4.Text = "New ID:";
+      this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+      // 
+      // label3
+      // 
+      this.label3.Location = new System.Drawing.Point(12, 19);
+      this.label3.Name = "label3";
+      this.label3.Size = new System.Drawing.Size(56, 23);
+      this.label3.TabIndex = 2;
+      this.label3.Text = "Old ID;";
+      this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+      // 
+      // cbNewId
+      // 
+      this.cbNewId.FormattingEnabled = true;
+      this.cbNewId.Location = new System.Drawing.Point(74, 58);
+      this.cbNewId.Name = "cbNewId";
+      this.cbNewId.Size = new System.Drawing.Size(121, 21);
+      this.cbNewId.TabIndex = 1;
+      // 
+      // cbOrginalId
+      // 
+      this.cbOrginalId.FormattingEnabled = true;
+      this.cbOrginalId.Location = new System.Drawing.Point(74, 19);
+      this.cbOrginalId.Name = "cbOrginalId";
+      this.cbOrginalId.Size = new System.Drawing.Size(121, 21);
+      this.cbOrginalId.TabIndex = 0;
+      // 
+      // ucUseComPort
+      // 
+      this.ucUseComPort.Controls.Add(this.cbComPort);
+      this.ucUseComPort.Controls.Add(this.label5);
+      this.ucUseComPort.Dock = System.Windows.Forms.DockStyle.Left;
+      this.ucUseComPort.Location = new System.Drawing.Point(466, 16);
+      this.ucUseComPort.Name = "ucUseComPort";
+      this.ucUseComPort.Size = new System.Drawing.Size(244, 68);
+      this.ucUseComPort.TabIndex = 3;
+      this.ucUseComPort.TabStop = false;
+      this.ucUseComPort.Text = "Use COM Port";
+      // 
+      // cbComPort
+      // 
+      this.cbComPort.Dock = System.Windows.Forms.DockStyle.Fill;
+      this.cbComPort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+      this.cbComPort.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+      this.cbComPort.FormattingEnabled = true;
+      this.cbComPort.Location = new System.Drawing.Point(59, 16);
+      this.cbComPort.Name = "cbComPort";
+      this.cbComPort.Size = new System.Drawing.Size(182, 21);
+      this.cbComPort.TabIndex = 1;
+      // 
+      // label5
+      // 
+      this.label5.AutoSize = true;
+      this.label5.Dock = System.Windows.Forms.DockStyle.Left;
+      this.label5.Location = new System.Drawing.Point(3, 16);
+      this.label5.Name = "label5";
+      this.label5.Size = new System.Drawing.Size(56, 13);
+      this.label5.TabIndex = 0;
+      this.label5.Text = "COM Port:";
       // 
       // FormConfig
       // 
@@ -303,6 +341,8 @@ namespace LewanSoul_Servos {
       this.tabPage1.ResumeLayout(false);
       this.tabPage2.ResumeLayout(false);
       this.groupBox1.ResumeLayout(false);
+      this.ucUseComPort.ResumeLayout(false);
+      this.ucUseComPort.PerformLayout();
       this.ResumeLayout(false);
 
     }
@@ -328,5 +368,8 @@ namespace LewanSoul_Servos {
     private System.Windows.Forms.Label label3;
     private System.Windows.Forms.ComboBox cbNewId;
     private System.Windows.Forms.ComboBox cbOrginalId;
+    private EZ_Builder.UCForms.UC.UCCheckGroupBox ucUseComPort;
+    private System.Windows.Forms.ComboBox cbComPort;
+    private System.Windows.Forms.Label label5;
   }
 }

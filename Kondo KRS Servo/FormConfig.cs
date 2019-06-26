@@ -52,6 +52,15 @@ namespace LewanSoul_Servos {
         cbSoftwareUart.Items.Add(port);
 
       cbSoftwareUart.SelectedItem = (Digital.DigitalPortEnum)cf.STORAGE[ConfigTitles.SOFTWARE_PORT];
+
+      ucUseComPort.Checked = Convert.ToBoolean(cf.STORAGE[ConfigTitles.USE_COM_PORT]);
+      foreach (var port in System.IO.Ports.SerialPort.GetPortNames())
+        cbComPort.Items.Add(port);
+
+      cbComPort.SelectedItem = cf.STORAGE[ConfigTitles.COM_PORT].ToString();
+
+      if (cbComPort.Items.Count == 0)
+        ucUseComPort.Enabled = false;
     }
 
     public PluginV1 GetConfiguration() {
@@ -76,6 +85,9 @@ namespace LewanSoul_Servos {
 
       _cf.STORAGE[ConfigTitles.USE_SOFTWARE_UART] = ucUseSoftwareUart.Checked;
       _cf.STORAGE[ConfigTitles.SOFTWARE_PORT] = (Digital.DigitalPortEnum)cbSoftwareUart.SelectedItem;
+
+      _cf.STORAGE[ConfigTitles.USE_COM_PORT] = ucUseComPort.Checked;
+      _cf.STORAGE[ConfigTitles.COM_PORT] = cbComPort.SelectedItem.ToString();
     }
 
     private void btnSave_Click(object sender, EventArgs e) {
@@ -119,6 +131,10 @@ namespace LewanSoul_Servos {
           (Digital.DigitalPortEnum)_cf.STORAGE[ConfigTitles.SOFTWARE_PORT],
            Uart.BAUD_RATE_ENUM.Baud_115200,
            cmdData);
+
+      if (Convert.ToBoolean(_cf.STORAGE[ConfigTitles.USE_COM_PORT]))
+        using (System.IO.Ports.SerialPort sb = new System.IO.Ports.SerialPort(_cf.STORAGE[ConfigTitles.COM_PORT].ToString(), 115200))
+          sb.Write(cmdData, 0, cmdData.Length);
     }
 
     private void btnChangeId_Click(object sender, EventArgs e) {

@@ -4,13 +4,15 @@ using System.Windows.Forms;
 using EZ_B;
 using EZ_Builder;
 using System.Linq;
+using System.IO.Ports;
 
 namespace LewanSoul_Servos {
 
   public partial class FormMain : EZ_Builder.UCForms.FormPluginMaster {
 
-    CustomConfig _customConfig = new CustomConfig();
-    LewanSoulController _controller = new LewanSoulController();
+    CustomConfig        _customConfig = new CustomConfig();
+    LewanSoulController _controller   = new LewanSoulController();
+    SerialPort          _serialPort   = new SerialPort();
 
     public FormMain() {
 
@@ -38,6 +40,11 @@ namespace LewanSoul_Servos {
       EZBManager.EZBs[0].Servo.OnServoMove -= Servo_OnServoMove;
       EZBManager.EZBs[0].Servo.OnServoGetPosition -= Servo_OnServoGetPosition;
       EZBManager.EZBs[0].Servo.OnServoRelease -= Servo_OnServoRelease;
+
+      if (_serialPort.IsOpen)
+        _serialPort.Close();
+
+      _serialPort.Dispose();
     }
 
     public override void SetConfiguration(EZ_Builder.Config.Sub.PluginV1 cf) {
@@ -46,6 +53,8 @@ namespace LewanSoul_Servos {
       cf.STORAGE.AddIfNotExist(ConfigTitles.SOFTWARE_PORT, Digital.DigitalPortEnum.D0);
       cf.STORAGE.AddIfNotExist(ConfigTitles.USE_HARDWARE_UART, true);
       cf.STORAGE.AddIfNotExist(ConfigTitles.USE_SOFTWARE_UART, false);
+      cf.STORAGE.AddIfNotExist(ConfigTitles.USE_COM_PORT, false);
+      cf.STORAGE.AddIfNotExist(ConfigTitles.COM_PORT, string.Empty);
 
       _customConfig = (CustomConfig)cf.GetCustomObjectV2(_customConfig.GetType());
 
@@ -56,22 +65,33 @@ namespace LewanSoul_Servos {
 
     private void initUART() {
 
-      if (!Convert.ToBoolean(_cf.STORAGE[ConfigTitles.USE_HARDWARE_UART]))
-        return;
+      if (Convert.ToBoolean(_cf.STORAGE[ConfigTitles.USE_HARDWARE_UART])) {
 
-      if (EZBManager.EZBs[0].IsConnected) {
+        if (EZBManager.EZBs[0].IsConnected) {
 
-        UInt32 baud = 115200;
-        int uartPort = Convert.ToInt16(_cf.STORAGE[ConfigTitles.HARDWARE_PORT]);
+          UInt32 baud = 115200;
+          int uartPort = Convert.ToInt16(_cf.STORAGE[ConfigTitles.HARDWARE_PORT]);
 
-        Invokers.SetAppendText(tbLog, true, "UART {0} @ {1}bps",
-          uartPort,
-          baud);
+          Invokers.SetAppendText(tbLog, true, "UART {0} @ {1}bps",
+            uartPort,
+            baud);
 
-        EZBManager.EZBs[0].Uart.UARTExpansionInit(uartPort, baud);
-      } else {
+          EZBManager.EZBs[0].Uart.UARTExpansionInit(uartPort, baud);
+        } else {
 
-        Invokers.SetAppendText(tbLog, true, "Not connected to ez-b");
+          Invokers.SetAppendText(tbLog, true, "Not connected to ez-b");
+        }
+      }
+
+      if (Convert.ToBoolean(_cf.STORAGE[ConfigTitles.USE_COM_PORT])) {
+
+        if (_serialPort.IsOpen)
+          _serialPort.Close();
+
+        _serialPort.BaudRate = 115200;
+        _serialPort.PortName = _cf.STORAGE[ConfigTitles.COM_PORT].ToString();
+
+        _serialPort.Open();
       }
     }
 
@@ -115,10 +135,10 @@ namespace LewanSoul_Servos {
         var port = (Servo.ServoPortEnum)Enum.Parse(typeof(Servo.ServoPortEnum), values[0], true);
 
         _controller.SetServoInServoMode(port);
-      
+
         sendServoCommand(_controller.SetModeServo(port));
 
-//        sendServoCommand(_controller.SetPositionLimits(port, 0, 1000));
+        //        sendServoCommand(_controller.SetPositionLimits(port, 0, 1000));
       } else if (windowCommand.Equals(ControlCommands.SET_CONTINUOUS_MODE, StringComparison.InvariantCultureIgnoreCase)) {
 
         if (values.Length != 1)
@@ -169,11 +189,17 @@ namespace LewanSoul_Servos {
           (Digital.DigitalPortEnum)_cf.STORAGE[ConfigTitles.SOFTWARE_PORT],
            Uart.BAUD_RATE_ENUM.Baud_115200,
            cmdData);
+
+      if (Convert.ToBoolean(_cf.STORAGE[ConfigTitles.USE_COM_PORT]))
+        _serialPort.Write(cmdData, 0, cmdData.Length);
     }
 
     private void ucConfigurationButton1_Click(object sender, EventArgs e) {
 
       using (FormConfig form = new FormConfig()) {
+
+        if (_serialPort.IsOpen)
+          _serialPort.Close();
 
         form.SetConfiguration(_cf);
 
@@ -208,6 +234,58 @@ namespace LewanSoul_Servos {
       if (getServoResponse.Success)
         return;
 
+      if (!_customConfig.VirtualPorts.Contains(servoPort)) {
+
+        getServoResponse.ErrorStr = "No matching lewansoul servo specified";
+        getServoResponse.Success = false;
+
+        return;
+      }
+
+      Invokers.SetAppendText(tbLog, true, "Reading position from {0}", servoPort);
+
+      if (Convert.ToBoolean(_cf.STORAGE[ConfigTitles.COM_PORT]))
+        getServoPositionComSerial(servoPort, getServoResponse);
+
+      if (!getServoResponse.Success && Convert.ToBoolean(_cf.STORAGE[ConfigTitles.COM_PORT]))
+        getServoPositionEZBUART(servoPort, getServoResponse);
+    }
+
+    private void getServoPositionComSerial(Servo.ServoPortEnum servoPort, EZ_B.Classes.GetServoValueResponse getServoResponse) {
+
+      if (!_serialPort.IsOpen) {
+
+        getServoResponse.Success = false;
+        getServoResponse.ErrorStr = "Not connected to COM Port";
+
+        return;
+      }
+
+
+      initUART();
+
+      sendServoCommand(_controller.GetServoPosition(servoPort));
+
+      System.Threading.Thread.Sleep(100);
+
+      var ret = new byte[_serialPort.BytesToRead];
+
+      _serialPort.Read(ret, 0, ret.Length);
+
+      if (ret.Length != 14) {
+
+        getServoResponse.ErrorStr = "Servo did not respond";
+        getServoResponse.Success = false;
+
+        return;
+      }
+
+      getServoResponse.Position = (int)EZ_B.Functions.RemapScalar(BitConverter.ToInt16(ret.Reverse().ToArray(), 0), 1, 1000, Servo.SERVO_MIN, Servo.SERVO_MAX);
+      getServoResponse.Success = true;
+    }
+
+    private void getServoPositionEZBUART(Servo.ServoPortEnum servoPort, EZ_B.Classes.GetServoValueResponse getServoResponse) {
+
       if (!EZBManager.EZBs[0].IsConnected) {
 
         getServoResponse.Success = false;
@@ -223,18 +301,6 @@ namespace LewanSoul_Servos {
 
         return;
       }
-
-      if (!_customConfig.VirtualPorts.Contains(servoPort)) {
-
-        getServoResponse.ErrorStr = "No matching lewansoul servo specified";
-        getServoResponse.Success = false;
-
-        return;
-      }
-
-      System.Diagnostics.Debug.WriteLine("requesting for " + servoPort);
-
-      Invokers.SetAppendText(tbLog, true, "Reading load from {0}", servoPort);
 
       initUART();
 

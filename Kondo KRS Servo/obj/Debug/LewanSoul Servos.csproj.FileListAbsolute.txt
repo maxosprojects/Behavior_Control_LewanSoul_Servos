@@ -1,0 +1,12 @@
+C:\Users\Public\Documents\EZ-Builder\Plugins\5df2a551-d124-43ac-9f5d-3b6234d106ae\title.jpg
+C:\Users\Public\Documents\EZ-Builder\Plugins\5df2a551-d124-43ac-9f5d-3b6234d106ae\plugin.xml
+C:\Users\Public\Documents\EZ-Builder\Plugins\5df2a551-d124-43ac-9f5d-3b6234d106ae\LewanSoul Servos.dll
+C:\Users\Public\Documents\EZ-Builder\Plugins\5df2a551-d124-43ac-9f5d-3b6234d106ae\LewanSoul Servos.pdb
+C:\My Documents\SVN\Developer - Windows\EZ-Builder Plugins\Behavior_Control_LewanSoul_Servos\Kondo KRS Servo\obj\Debug\LewanSoul Servos.csprojAssemblyReference.cache
+C:\My Documents\SVN\Developer - Windows\EZ-Builder Plugins\Behavior_Control_LewanSoul_Servos\Kondo KRS Servo\obj\Debug\LewanSoul_Servos.FormConfig.resources
+C:\My Documents\SVN\Developer - Windows\EZ-Builder Plugins\Behavior_Control_LewanSoul_Servos\Kondo KRS Servo\obj\Debug\LewanSoul_Servos.FormMain.resources
+C:\My Documents\SVN\Developer - Windows\EZ-Builder Plugins\Behavior_Control_LewanSoul_Servos\Kondo KRS Servo\obj\Debug\LewanSoul_Servos.Properties.Resources.resources
+C:\My Documents\SVN\Developer - Windows\EZ-Builder Plugins\Behavior_Control_LewanSoul_Servos\Kondo KRS Servo\obj\Debug\LewanSoul Servos.csproj.GenerateResource.cache
+C:\My Documents\SVN\Developer - Windows\EZ-Builder Plugins\Behavior_Control_LewanSoul_Servos\Kondo KRS Servo\obj\Debug\LewanSoul Servos.csproj.CoreCompileInputs.cache
+C:\My Documents\SVN\Developer - Windows\EZ-Builder Plugins\Behavior_Control_LewanSoul_Servos\Kondo KRS Servo\obj\Debug\LewanSoul Servos.dll
+C:\My Documents\SVN\Developer - Windows\EZ-Builder Plugins\Behavior_Control_LewanSoul_Servos\Kondo KRS Servo\obj\Debug\LewanSoul Servos.pdb
