@@ -87,7 +87,7 @@ namespace LewanSoul_Servos {
       _cf.STORAGE[ConfigTitles.SOFTWARE_PORT] = (Digital.DigitalPortEnum)cbSoftwareUart.SelectedItem;
 
       _cf.STORAGE[ConfigTitles.USE_COM_PORT] = ucUseComPort.Checked;
-      _cf.STORAGE[ConfigTitles.COM_PORT] = cbComPort.SelectedItem.ToString();
+      _cf.STORAGE[ConfigTitles.COM_PORT] = cbComPort.SelectedItem == null ? string.Empty : cbComPort.SelectedItem.ToString();
     }
 
     private void btnSave_Click(object sender, EventArgs e) {

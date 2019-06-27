@@ -7,5 +7,5 @@
   <PLUGIN_GUID>5df2a551-d124-43ac-9f5d-3b6234d106ae</PLUGIN_GUID>
   <CATEGORY_TYPE>Servo</CATEGORY_TYPE>
   <DESCRIPTION>Control LewanSoul servos with EZ-Builder</DESCRIPTION>B
-  <VersionRelease>14</VersionRelease>
+  <VersionRelease>15</VersionRelease>
 </PluginV1XML>
